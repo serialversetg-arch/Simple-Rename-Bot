@@ -1,34 +1,23 @@
-from pyrogram import Client, filters 
-from config import ADMIN, DOWNLOAD_LOCATION
-import os
+from pyrogram import Client, filters
+from database import db # Maan lijiye aapka DB setup hai
 
-dir = os.listdir(DOWNLOAD_LOCATION)
+@Client.on_message(filters.private & filters.photo)
+async def add_thumbs(bot, message):
+    user_id = message.from_user.id
+    await db.set_thumbnail(user_id, file_id=message.photo.file_id)
+    await message.reply_text("✅ **Tʜᴜᴍʙɴᴀɪʟ Sᴀᴠᴇᴅ Sᴜᴄᴄᴇssғᴜʟʟʏ!**\n\nNᴏᴡ I ᴡɪʟʟ ᴜsᴇ ᴛʜɪs ɪᴍᴀɢᴇ ɪɴ ʏᴏᴜʀ ʀᴇɴᴀᴍᴇᴅ ғɪʟᴇs.")
 
-@Client.on_message(filters.private & filters.photo & filters.user(ADMIN))                            
-async def set_tumb(bot, msg):       
-    if len(dir) == 0:
-        await bot.download_media(message=msg.photo.file_id, file_name=f"{DOWNLOAD_LOCATION}/thumbnail.jpg")
-        return await msg.reply(f"Your permanent thumbnail is saved in dictionary ✅️ \nif you change yur server or recreate the server app to again reset your thumbnail⚠️")            
-    else:    
-        os.remove(f"{DOWNLOAD_LOCATION}/thumbnail.jpg")
-        await bot.download_media(message=msg.photo.file_id, file_name=f"{DOWNLOAD_LOCATION}/thumbnail.jpg")               
-        return await msg.reply(f"Your permanent thumbnail is saved in dictionary ✅️ \nif you change yur server or recreate the server app to again reset your thumbnail⚠️")            
+@Client.on_message(filters.private & filters.command("del_thumb"))
+async def delete_thumbs(bot, message):
+    user_id = message.from_user.id
+    await db.set_thumbnail(user_id, file_id=None)
+    await message.reply_text("🗑️ **Tʜᴜᴍʙɴᴀɪʟ Dᴇʟᴇᴛᴇᴅ!**")
 
-
-@Client.on_message(filters.private & filters.command("view") & filters.user(ADMIN))                            
-async def view_tumb(bot, msg):
-    try:
-        await msg.reply_photo(photo=f"{DOWNLOAD_LOCATION}/thumbnail.jpg", caption="this is your current thumbnail")
-    except Exception as e:
-        print(e)
-        return await msg.reply_text(text="you don't have any thumbnail")
-
-@Client.on_message(filters.private & filters.command(["del", "del_thumb"]) & filters.user(ADMIN))                            
-async def del_tumb(bot, msg):
-    try:
-        os.remove(f"{DOWNLOAD_LOCATION}/thumbnail.jpg")
-        await msg.reply_text("your thumbnail was removed🚫")
-    except Exception as e:
-        print(e)
-        return await msg.reply_text(text="you don't have any thumbnail")
-    
+@Client.on_message(filters.private & filters.command("show_thumb"))
+async def view_thumbs(bot, message):
+    user_id = message.from_user.id
+    thumb = await db.get_thumbnail(user_id)
+    if thumb:
+        await message.reply_photo(photo=thumb, caption="🖼️ **Yᴏᴜʀ Cᴜʀʀᴇɴᴛ Tʜᴜᴍʙɴᴀɪʟ**")
+    else:
+        await message.reply_text("❌ **Nᴏ Tʜᴜᴍʙɴᴀɪʟ Fᴏᴜɴᴅ!**")
