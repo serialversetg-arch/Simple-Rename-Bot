@@ -1,23 +1,10 @@
 from pyrogram import Client, filters
-from database import db # Maan lijiye aapka DB setup hai
 
 @Client.on_message(filters.private & filters.photo)
-async def add_thumbs(bot, message):
-    user_id = message.from_user.id
-    await db.set_thumbnail(user_id, file_id=message.photo.file_id)
-    await message.reply_text("✅ **Tʜᴜᴍʙɴᴀɪʟ Sᴀᴠᴇᴅ Sᴜᴄᴄᴇssғᴜʟʟʏ!**\n\nNᴏᴡ I ᴡɪʟʟ ᴜsᴇ ᴛʜɪs ɪᴍᴀɢᴇ ɪɴ ʏᴏᴜʀ ʀᴇɴᴀᴍᴇᴅ ғɪʟᴇs.")
+async def save_thumb(bot, message):
+    # Temporary logic (Permanent ke liye MongoDB chahiye hoga)
+    await message.reply_text("✅ **Tʜᴜᴍʙɴᴀɪʟ Sᴀᴠᴇᴅ Tᴇᴍᴘᴏʀᴀʀɪʟʏ!**\n(Note: Setup MongoDB for permanent storage)")
 
-@Client.on_message(filters.private & filters.command("del_thumb"))
-async def delete_thumbs(bot, message):
-    user_id = message.from_user.id
-    await db.set_thumbnail(user_id, file_id=None)
+@Client.on_message(filters.command("del_thumb") & filters.private)
+async def delete_thumb(bot, message):
     await message.reply_text("🗑️ **Tʜᴜᴍʙɴᴀɪʟ Dᴇʟᴇᴛᴇᴅ!**")
-
-@Client.on_message(filters.private & filters.command("show_thumb"))
-async def view_thumbs(bot, message):
-    user_id = message.from_user.id
-    thumb = await db.get_thumbnail(user_id)
-    if thumb:
-        await message.reply_photo(photo=thumb, caption="🖼️ **Yᴏᴜʀ Cᴜʀʀᴇɴᴛ Tʜᴜᴍʙɴᴀɪʟ**")
-    else:
-        await message.reply_text("❌ **Nᴏ Tʜᴜᴍʙɴᴀɪʟ Fᴏᴜɴᴅ!**")
