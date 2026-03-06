@@ -1,73 +1,93 @@
-from pyrogram import Client, filters, enums
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup 
-from config import ADMIN
- 
+import random
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-@Client.on_message(filters.command("start") & filters.private)                             
-async def start_cmd(bot, msg):
-    txt="This is personal use bot 🙏. Do you want your own bot? 👇 Click the source code to deploy"
-    btn = InlineKeyboardMarkup([[
-        InlineKeyboardButton("⭕️ Bot Owner", url="https://t.me/ICT_FANS")
-        ],[
-        InlineKeyboardButton("🔰 Updates channel", url="https://t.me/Aniket_Movies_hub")
-    ]])
-    if msg.from_user.id != ADMIN:
-        return await msg.reply_text(text=txt, reply_markup=btn, disable_web_page_preview = True)
-    await start(bot, msg, cb=False)
+# --- CONFIGURATION (Images & Texts) ---
 
+START_IMAGES = [
+    "https://i.ibb.co/9Hnpgttg/x.jpg",
+    "https://i.ibb.co/G3Q974K3/x.jpg",
+    "https://i.ibb.co/fzZTRQh8/x.jpg",
+    "https://i.ibb.co/S7609P4B/x.jpg",
+    "https://i.ibb.co/pBZbL7V9/x.jpg"
+]
 
-@Client.on_callback_query(filters.regex("start"))
-async def start(bot, msg, cb=True):   
-    txt=f"Hᴀɪ  {msg.from_user.mention} I Aᴍ Fɪʟᴇ Rᴇɴᴀᴍᴇ Bᴏᴛ Wɪᴛʜ Cᴜsᴛᴏᴍ Tʜᴜᴍʙɴᴀɪʟ & Cᴀᴘᴛɪᴏɴ Sᴜᴘᴘᴏʀᴛ.
-Aɴᴅ Rᴇɴᴀᴍᴇ Wɪᴛʜᴏᴜᴛ Dᴏᴡɴʟᴏᴀᴅ 💯 Fᴜʟʟʏ Wᴏʀᴋ Oɴ Tɢ Dᴄ Sᴏ Rᴇɴᴀᴍɪɴɢ
-Sᴘᴇᴇᴅ Is Dᴇᴘᴇɴᴅɪɴɢ Oɴ Yᴏᴜʀ Fɪʟᴇ Dᴄ_Iᴅ 
+START_TEXT = """
+✨ **Aᴅᴠᴀɴᴄᴇᴅ Rᴇɴᴀᴍᴇ Bᴏᴛ V4** ✨
 
-Pʟᴇᴀsᴇ Sʜᴀʀᴇ Tʜɪs Bᴏᴛ Tᴏ Yᴏᴜʀ Fʀɪᴇɴᴅs 💝.
-.\nthis bot is made by <b><a href=https://t.me/ICT_FANS</a>ꪖꪀ𝓲𝘬ꫀ𝓽</b>"                                     
-    button= [[
-        InlineKeyboardButton("🤖 Bot Updates", url="https://t.me/ANIKET_MOVIES_HUB")
-        ],[
-        InlineKeyboardButton("ℹ️ Help", callback_data="help"),
-        InlineKeyboardButton("❗️ About", callback_data="about")
-        InlineKeyboardButton("Plans ⚡", callback_data="ꪖꪀ𝓲𝘬ꫀ𝓽 ρꪶꪖꪀ𝘴 ꪑꪗ ꪀꪖꪑꫀ")
-    ]]  
-    if cb:
-        await msg.message.edit(text=txt, reply_markup=InlineKeyboardMarkup(button), disable_web_page_preview = True, parse_mode=enums.ParseMode.HTML)
-    else:
-        await msg.reply_text(text=txt, reply_markup=InlineKeyboardMarkup(button), disable_web_page_preview = True, parse_mode=enums.ParseMode.HTML)
+👋 **Hᴇʟʟᴏ** {mention},
 
+I ᴀᴍ ᴀ Pᴏᴡᴇʀғᴜʟ **Fɪʟᴇ Rᴇɴᴀᴍᴇʀ Bᴏᴛ** ᴡɪᴛʜ Cᴜsᴛᴏᴍ Tʜᴜᴍʙɴᴀɪʟ & Cᴀᴘᴛɪᴏɴ Sᴜᴘᴘᴏʀᴛ.
 
-@Client.on_callback_query(filters.regex("help"))
-async def help(bot, msg):
-    txt = "just send a file and /rename <new name> with replayed your file\n\n"
-    txt += "send photo to set thumbnail automatic \n"
-    txt += "/view to see your thumbnail \n"
-    txt += "/del to delete your thumbnail"
-    button= [[        
-        InlineKeyboardButton("🚫 Close", callback_data="del"),
-        InlineKeyboardButton("⬅️ Back", callback_data="start") 
-    ]]  
-    await msg.message.edit(text=txt, reply_markup=InlineKeyboardMarkup(button), disable_web_page_preview = True)
+🚀 **Hᴏᴡ Tᴏ Usᴇ?**
+1️⃣ Sᴇɴᴅ ᴍᴇ ᴀɴʏ **Fɪʟᴇ** ᴏʀ **Vɪᴅᴇᴏ**.
+2️⃣ Sᴇɴᴅ ᴀ **Pʜᴏᴛᴏ** ᴛᴏ sᴇᴛ ɪᴛ ᴀs Tʜᴜᴍʙɴᴀɪʟ.
+3️⃣ Usᴇ `/set_caption` ᴛᴏ sᴇᴛ ʏᴏᴜʀ Cᴀᴘᴛɪᴏɴ.
 
+🛡 **Sᴜᴘᴘᴏʀᴛ:** [SᴇʀɪᴀʟVᴇʀsᴇ Sᴜᴘᴘᴏʀᴛ](https://t.me/SerialVerse_support)
+"""
+
+# --- BUTTONS SETUP ---
+
+START_BUTTONS = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton("💝 Jᴏɪɴ Tᴇʟᴇɢʀᴀᴍ Cʜᴀɴɴᴇʟ", url="https://t.me/Hindi_Tv_Verse")
+        ],
+        [
+            InlineKeyboardButton("🧙‍♀️ Jᴏɪɴ Oᴜʀ Mᴀɪɴ Cʜᴀɴɴᴇʟ", url="https://t.me/AJ_TVSERIAL")
+        ],
+        [
+            InlineKeyboardButton("👨‍💻 Oᴡɴᴇʀ", url="https://t.me/SerialVerse_support"),
+            InlineKeyboardButton("ℹ️ Aʙᴏᴜᴛ", callback_data="about")
+        ]
+    ]
+)
+
+# --- START COMMAND HANDLER ---
+
+@Client.on_message(filters.command("start") & filters.private)
+async def start(bot, message):
+    # Har baar /start par ek random photo select hogi
+    random_photo = random.choice(START_IMAGES)
+    
+    try:
+        await message.reply_photo(
+            photo=random_photo,
+            caption=START_TEXT.format(mention=message.from_user.mention),
+            reply_markup=START_BUTTONS
+        )
+    except Exception as e:
+        # Agar image load nahi hui toh text message bhej dega
+        await message.reply_text(
+            text=START_TEXT.format(mention=message.from_user.mention),
+            reply_markup=START_BUTTONS
+        )
+
+# --- ABOUT CALLBACK (Optional) ---
 
 @Client.on_callback_query(filters.regex("about"))
-async def about(bot, msg):
-    me=await bot.get_me()
-    Master=f"<a href=https://t.me/ICT_FANS>ANIKET</a> & <a href=https://t.me/ANIKET_MOVIES_HUB>MOVIE</a>"  
-    Source="<a href=https://github.com/MrMKN/Simple-Rename-Bot>Click Here</a>"
-    txt=f"<b>Bot Name: {me.mention}\nDeveloper: <a href=https://t.me/ICT_FANS>ANIKET</a>\nBot Updates: <a href=https://t.me/ANIKET_MOVIES_HUB>ANIKET MOVIES™</a>\nMy Master's: {Master}\nSource Code: {Source}</b>"                 
-    button= [[        
-        InlineKeyboardButton("🚫 Close", callback_data="del"),
-        InlineKeyboardButton("⬅️ Back", callback_data="start") 
-    ]]  
-    await msg.message.edit(text=txt, reply_markup=InlineKeyboardMarkup(button), disable_web_page_preview = True, parse_mode=enums.ParseMode.HTML)
+async def about(bot, update):
+    ABOUT_TEXT = """
+📜 **Bᴏᴛ Dᴇᴛᴀɪʟs** 📜
 
+✨ **Nᴀᴍᴇ:** Rᴇɴᴀᴍᴇʀ V4
+🚀 **Sᴘᴇᴇᴅ:** 100 Mbps+
+💻 **Lᴀɴɢᴜᴀɢᴇ:** Pʏᴛʜᴏɴ 3
+🛰 **Sᴇʀᴠᴇʀ:** V.P.S (Hɪɢʜ Sᴘᴇᴇᴅ)
 
-@Client.on_callback_query(filters.regex("del"))
-async def closed(bot, msg):
-    try:
-        await msg.message.delete()
-    except:
-        return
+🛡 **Oᴡɴᴇʀ:** [SᴇʀɪᴀʟVᴇʀsᴇ Sᴜᴘᴘᴏʀᴛ](https://t.me/SerialVerse_support)
+⚡ **Pᴏᴡᴇʀᴇᴅ Bʏ:** [Hɪɴᴅɪ Tᴠ Vᴇʀsᴇ](https://t.me/Hindi_Tv_Verse)
+"""
+    await update.message.edit_text(
+        text=ABOUT_TEXT,
+        disable_web_page_preview=True,
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🏠 Bᴀᴄᴋ", callback_data="back")]])
+    )
 
-
+@Client.on_callback_query(filters.regex("back"))
+async def back(bot, update):
+    await update.message.edit_caption(
+        caption=START_TEXT.format(mention=update.from_user.mention),
+        reply_markup=START_BUTTONS
+    )
