@@ -1,6 +1,33 @@
+from aiohttp import web
+import asyncio
 from pyrogram import Client
 from config import *
 import os
+
+
+# --- Health Check Setup ---
+async def health_check(request):
+    # Jab platform Port 8000 pe request bhejega, ye "OK" return karega
+    return web.Response(text="Bot is Alive and Running!")
+
+async def start_server():
+    app = web.Application()
+    app.router.add_get("/", health_check)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    # Port 8000 pe server start ho raha hai
+    site = web.TCPSite(runner, "0.0.0.0", 8000)
+    await site.start()
+    print("✅ TCP Health Check Server started on Port 8000")
+
+# --- Bot Start Logic ---
+async def main():
+    # Health check server ko background mein chalane ke liye
+    await start_server()
+    
+    # Aapka bot start karne ka code yahan aayega
+    # Example: await bot.start()
+    # await idle()
 
 class Bot(Client):
     if not os.path.isdir(DOWNLOAD_LOCATION):
