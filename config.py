@@ -5,7 +5,13 @@ API_HASH = environ.get("API_HASH", "8601f2f24993f6fdbcbac3bb27ceec38")
 BOT_TOKEN = environ.get("BOT_TOKEN", "")
 ADMIN = int(environ.get("ADMIN", "5232142502"))          
 DB_URL = environ.get("DB_URL", "mongodb+srv://King:Cobra765592@cluster0.qy4m5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-
+START_IMAGES = [ 
+    "https://i.ibb.co/9Hnpgttg/x.jpg",
+    "https://i.ibb.co/G3Q974K3/x.jpg",
+    "https://i.ibb.co/fzZTRQh8/x.jpg",
+    "https://i.ibb.co/S7609P4B/x.jpg",
+    "https://i.ibb.co/pBZbL7V9/x.jpg"]
+  
 # for thumbnail ( back end is MrAniket brain 😉)
 DOWNLOAD_LOCATION = "./DOWNLOADS"
 
