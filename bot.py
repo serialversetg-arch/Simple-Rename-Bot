@@ -1,53 +1,37 @@
-from aiohttp import web
+import os
 import asyncio
+from aiohttp import web
 from pyrogram import Client, idle
 from config import *
-import os
 
-# --- Health Check Setup ---
 async def health_check(request):
-    # Jab platform Port 8000 pe request bhejega, ye "OK" return karega
-    return web.Response(text="Bot is Alive and Running!")
+    return web.Response(text="Bot is Alive!")
 
 async def start_server():
     app = web.Application()
     app.router.add_get("/", health_check)
     runner = web.AppRunner(app)
     await runner.setup()
-    # Port 8000 pe server start ho raha hai
-    site = web.TCPSite(runner, "0.0.0.0", 8000)
-    await site.start()
-    print("✅ TCP Health Check Server started on Port 8000")
+    await web.TCPSite(runner, "0.0.0.0", 8000).start()
 
 class Bot(Client):
     def __init__(self):
-        # Download location folder creation
-        if not os.path.isdir(DOWNLOAD_LOCATION):
-            os.makedirs(DOWNLOAD_LOCATION)
-            
         super().__init__(
-            name="simple-renamer",
+            name="Stylish-Renamer",
             api_id=API_ID,
             api_hash=API_HASH,
             bot_token=BOT_TOKEN,
-            workers=100,
-            plugins={"root": "main"},
-            sleep_threshold=10,
+            plugins={"root": "main"}
         )
 
     async def start(self):
         await super().start()
-        # Health check server ko background task mein start karna
         asyncio.create_task(start_server())
-        
-        me = await self.get_me()      
-        print(f"✅ {me.first_name} | @{me.username} 𝚂𝚃𝙰𝚁𝚃𝙴𝙳...⚡️")
-       
-    async def stop(self, *args):
-       await super().stop()      
-       print("Bot Stopped Safely.")
+        me = await self.get_me()
+        print(f"✅ {me.first_name} STARTED on Port 8000")
 
-# --- Running the Bot ---
+    async def stop(self, *args):
+        await super().stop()
+
 if __name__ == "__main__":
-    bot = Bot()
-    bot.run()
+    Bot().run()
