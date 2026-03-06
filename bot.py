@@ -1,9 +1,8 @@
 from aiohttp import web
 import asyncio
-from pyrogram import Client
+from pyrogram import Client, idle
 from config import *
 import os
-
 
 # --- Health Check Setup ---
 async def health_check(request):
@@ -20,20 +19,12 @@ async def start_server():
     await site.start()
     print("✅ TCP Health Check Server started on Port 8000")
 
-# --- Bot Start Logic ---
-async def main():
-    # Health check server ko background mein chalane ke liye
-    await start_server()
-    
-    # Aapka bot start karne ka code yahan aayega
-    # Example: await bot.start()
-    # await idle()
-
 class Bot(Client):
-    if not os.path.isdir(DOWNLOAD_LOCATION):
-        os.makedirs(DOWNLOAD_LOCATION)
-
     def __init__(self):
+        # Download location folder creation
+        if not os.path.isdir(DOWNLOAD_LOCATION):
+            os.makedirs(DOWNLOAD_LOCATION)
+            
         super().__init__(
             name="simple-renamer",
             api_id=API_ID,
@@ -43,15 +34,20 @@ class Bot(Client):
             plugins={"root": "main"},
             sleep_threshold=10,
         )
+
     async def start(self):
         await super().start()
+        # Health check server ko background task mein start karna
+        asyncio.create_task(start_server())
+        
         me = await self.get_me()      
-        print(f"{me.first_name} | @{me.username} 𝚂𝚃𝙰𝚁𝚃𝙴𝙳...⚡️")
+        print(f"✅ {me.first_name} | @{me.username} 𝚂𝚃𝙰𝚁𝚃𝙴𝙳...⚡️")
        
     async def stop(self, *args):
        await super().stop()      
-       print("Bot Restarting........")
+       print("Bot Stopped Safely.")
 
-
-bot = Bot()
-bot.run()
+# --- Running the Bot ---
+if __name__ == "__main__":
+    bot = Bot()
+    bot.run()
