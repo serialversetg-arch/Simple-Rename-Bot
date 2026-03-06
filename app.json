@@ -1,30 +1,14 @@
 {
-  "name": "Simple-Rename-Bot",
-  "description": "Simple & High Speed Telegram File Rename Bot For only personal use",                  
-  "keywords": ["telegram", "Rename-bot", "pyrogram"],
-  "logo": "https://graph.org/file/b7e8484f6395a180b6380.jpg",
-  "repository": "https://github.com/MrMKN/Simple-Rename-Bot",
+  "name": "Simple Rename Bot",
+  "description": "A stylish and powerful Telegram Rename Bot.",
+  "repository": "https://github.com/serialversetg-arch/Simple-Rename-Bot",
+  "logo": "https://i.ibb.co/9Hnpgttg/x.jpg",
   "env": {
-    "API_ID": {"description": "Get this value from https://my.telegram.org", "required": true},
-    "API_HASH": {"description": "Get this value from https://my.telegram.org", "required": true},                              
-    "BOT_TOKEN": {"description": "Your bot token. Get this value from https://t.me/BotFather", "required": true},
-    "ADMIN": {"description": "your telegram id. because this bot repo is admin only", "required": true},
-    "CAPTION": {"description": "your permanent caption. Keyword's 👉 {file_name} = file name add in caption {file_size} = file size add in caption", "value": "{file_name}\n\n💽 Size = {file_size}\n\n📯Join My Channel : @ANIKET_MOVIES_HUB", "required": false}                         
-  }, 
-  "addons": [ ],
-  "buildpacks": [{"url": "heroku/python"}]
+    "API_ID": { "description": "Get from my.telegram.org", "value": "" },
+    "API_HASH": { "description": "Get from my.telegram.org", "value": "" },
+    "BOT_TOKEN": { "description": "Get from @BotFather", "value": "" },
+    "ADMIN": { "description": "Your ID", "value": "" },
+    "DB_URL": { "description": "MongoDB URL", "value": "" },
+    "LOG_CHANNEL": { "description": "Log Channel ID", "value": "" }
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
